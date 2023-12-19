@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.json', name: 'json', version: '20200518'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+// default: listens to incoming clients on port 8000, nodes on port 8080
+// gradle runLeaderServer -PclientPort=8000 -PgameServerPort=8080 --console=plain -q
+task runLeaderServer(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'leader.LeaderServer'
+
+    if (project.hasProperty("clientPort") && project.hasProperty("gameServerPort")) {
+        args(project.getProperty("clientPort"), project.getProperty("gameServerPort"))
+    } else if (project.hasProperty("clientPort")) {
+        args(project.getProperty("clientPort"), 8080)
+    } else if (project.hasProperty("gameServerPort")) {
+        args(8000, project.getProperty("gameServerPort"))
+    } else {
+        args(8000, 8080)
+    }
+}
+
+// note: each game server must have a different clientPort when connecting to the same leader server
+// gradle runGameServer -PleaderHost='localhost' -PleaderPort=8080 -PclientPort=8040 --console=plain -q
+task runGameServer(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'gameserver.GameServer'
+
+    if (project.hasProperty("leaderHost") && project.hasProperty("leaderPort") && project.hasProperty("clientPort")) {
+        args(project.getProperty("leaderHost"), project.getProperty("leaderPort"), project.getProperty("clientPort"))
+    } else if (project.hasProperty("leaderHost") && project.hasProperty("leaderPort")) {
+        args(project.getProperty("leaderHost"), project.getProperty("leaderPort"), 8040)
+    } else if (project.hasProperty("leaderHost") && project.hasProperty("clientPort")) {
+        args(project.getProperty("leaderHost"), 8080, project.getProperty("clientPort"))
+    } else if (project.hasProperty("leaderPort") && project.hasProperty("clientPort")) {
+        args('localhost', project.getProperty("leaderPort"), project.getProperty("clientPort"))
+    } else if (project.hasProperty("leaderHost")) {
+        args(project.getProperty("leaderHost"), 8080, 8040)
+    } else if (project.hasProperty("leaderPort")) {
+        args('localhost', project.getProperty("leaderPort"), 8040)
+    } else if (project.hasProperty("clientPort")) {
+        args('localhost', 8080, project.getProperty("clientPort"))
+    } else {
+        args('localhost', 8080, 8040)
+    }
+}
+
+// gradle runClient -PleaderHost='localhost' -PleaderPort=8000 --console=plain -q
+task runClient(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'client.Client'
+    standardInput = System.in
+
+    if (project.hasProperty("leaderHost") && project.hasProperty("leaderPort")) {
+        args(project.getProperty("leaderHost"), project.getProperty("leaderPort"))
+    } else if (project.hasProperty("leaderHost")) {
+        args(project.getProperty("leaderHost"), 8080)
+    } else if (project.hasProperty("leaderPort")) {
+        args('localhost', project.getProperty("leaderPort"))
+    } else {
+        args('localhost', 8000)
+    }
+}
