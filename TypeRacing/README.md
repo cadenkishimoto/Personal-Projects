@@ -5,6 +5,17 @@
 
 ### Video Link: 
 
+## Table of Contents
+- Project Description
+- Class Structure
+  - Leader Server (L)
+  - Game Server (G)
+  - Client (C)
+- Additional Files
+- General Communication
+- Handlers and Listeners Format: XX[Handler/Listener]
+- How to Run the Program
+
 ## Project Description
 Hi there! Welcome to my personal project: TypeRacing! I thought it would be a cool project to work on/start from scratch, 
 and I got the inspiration for this project shortly after I finished my Distributed Systems course at Arizona State 
@@ -65,7 +76,7 @@ For context, control is started in Client, but a new GameClient is created for e
 joins. Client mostly deals with L communication, while GameClient deals with G communication. Sender acts as a helper 
 class for GameClient, in which it sends inputted answers to G.
 
-### Additional Files
+## Additional Files
 In addition to the files/classes above, there are also 2 additional files: prompts.txt and users.txt. Both files are 
 used to keep data persistent between server restarts.
 
@@ -74,7 +85,7 @@ https://www.lipsum.com/) - with each line containing a prompt
 
 users.txt holds user data on each line - with each line containing a user's username, password, and number of wins
 
-### General Communication
+## General Communication
 This is also detailed in the "TypeRacer Project Structure Visual", but here is the general communication for individual 
 Socket connections:
 
@@ -84,7 +95,7 @@ GCHandler <--> GameClient
 
 LGHandler <--> GLHandler
 
-### Handlers and Listeners Format: XX[Handler/Listener]
+## Handlers and Listeners Format: XX[Handler/Listener]
 This is also detailed in the "TypeRacer Project Structure Visual", but here is the format for handler/listener naming:
 
 - 1st Letter is the Package Group it belongs to
@@ -96,7 +107,9 @@ LGHandler is a file of L that handles a connection with G
 GLHandler is a file of G that handles a connection with L
 
 ## How to Run the Program
-I chose Gradle as my build environment for this project, which makes things simple and easy to run via tasks. 
+I chose Gradle as my build environment for this project, which makes things simple and easy to run via tasks. Please 
+start L first before attempting to run C or G, as they will throw a ConnectException otherwise. (C and G can be started 
+at any time after.)
 
 For running L, CLI arguments of a clientPort and gameServerPort can be entered (clientPort is the port number listening 
 for incoming C connection requests, gameServerPort is the port number listening for incoming G connection requests).
