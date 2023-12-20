@@ -3,7 +3,7 @@
 
 #### Created by Caden Kishimoto
 
-### Video Link: 
+### Video Link: https://youtu.be/EKYNMzFzR2I 
 
 ## Table of Contents
 - Project Description

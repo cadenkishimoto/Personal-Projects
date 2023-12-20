@@ -1,6 +1,6 @@
 Billy#	#billy#	#0
 Joe#	#joe#	#0
-Caden#	#caden#	#1
+Caden#	#caden#	#3
 Bob#	#bob#	#1
 Sally#	#sally#	#1
 Sarah#	#sarah#	#0
